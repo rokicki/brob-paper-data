@@ -1,0 +1,7 @@
+# Average-case one-row-strip (-p 1) decompositions picked by brobdicube, by n (from data/brobdicube/runs/model-p1.out)
+# 481 logged sizes, n = 4..1073741824; ranges overlap where the choice alternates
+# steps: key as applied, then stages used (greedy) or opt (optimal, any length);
+# total = stages used in all steps, lowest-highest where it varies
+      from n         to n    picked     total  steps
+           4         1512    55/168    85-608  000111 opt  012xxx opt  xxx102 opt
+          20   1073741824   426/473   67-1278  010101 opt  0x1x2x opt  x1x2x0 opt

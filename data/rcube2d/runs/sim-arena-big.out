@@ -1,0 +1,48 @@
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 28 -p 28 -z 1073741824002 -M 1 1073741824
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 181742518299 My 536870911 width 28 lll_r 3484723977379225013
+N 1073741824 flags - width 28 moves 3484723977379225013 cancel 17162020705998155 blocks 13720168599297771
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 21 -p 21 -z 33554432000 -M 1 33554432
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 5008465873 My 16777215 width 21 lll_r 4001338512927795
+N 33554432 flags - width 21 moves 4001338512927795 cancel 19206370383720 blocks 15765417913440
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 23 -p 23 -z 67108864000 -M 1 67108864
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 10579285245 My 33554431 width 23 lll_r 15433995512290025
+N 67108864 flags - width 23 moves 15433995512290025 cancel 87878783435775 blocks 71497841389220
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 24 -p 24 -z 134217728000 -M 1 134217728
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 21365473383 My 67108863 width 24 lll_r 59742192757912230
+N 134217728 flags - width 24 moves 59742192757912230 cancel 305098304517702 blocks 247283563262174
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 25 -p 25 -z 268435456000 -M 1 268435456
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 43128821693 My 134217727 width 25 lll_r 231546096632910072
+N 268435456 flags - width 25 moves 231546096632910072 cancel 1063365137509212 blocks 858673858917176
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 27 -p 27 -z 805306368000 -M 1 805306368
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 133086943729 My 402653183 width 27 lll_r 1984736352156434792
+N 805306368 flags - width 27 moves 1984736352156434792 cancel 8702377783546948 blocks 6977598140042567
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 27 -p 27 -z 536870912000 -M 1 536870912
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 90311826491 My 268435455 width 27 lll_r 897885045777505126
+N 536870912 flags - width 27 moves 897885045777505126 cancel 4874659143028300 blocks 3910108017694339
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 27 -p 27 -z 671088640000 -M 1 671088640
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+r 111754848765 My 335544319 width 27 lll_r 1388840911992589482
+N 671088640 flags - width 27 moves 1388840911992589482 cancel 6712673563608398 blocks 5383021038555604

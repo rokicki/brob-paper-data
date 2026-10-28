@@ -1,0 +1,4 @@
+Sat Oct 17 21:56:28 PDT 2026
+worst-p1: 481 sizes
+done in 4 s
+python3 scripts/run_brobdicube.py --jobs 8 worst-p1  8.80s user 0.22s system 209% cpu 4.313 total

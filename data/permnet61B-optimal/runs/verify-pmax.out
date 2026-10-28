@@ -1,0 +1,19 @@
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/A61b -O -x -p max -z 65536900 -M 1 65536
+Mon Oct 12 12:42:25 AM PDT 2026
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/A61b -O -x -p max -z 65536900 -M 1 65536
+Loaded 2 algs in 3.60216403007507
+Estimated average cost is 16786028195.8836
+Use 000102 000102-0031-0062-0111-0219-0226-9192634ddcd6bedb.alg [optimal] cost 8432716668.14746 on 000000 map 0 used 31/31
+Widths {7^1,8^4095}x4 {8^2,9^3639}x10 {8^4088,9^7}x7 {9^3633,10^7}x10
+Use 023x1x 0123xx-0030-0060-0135-0201-0086-6ee1ba4f7cb1797b.alg [optimal] cost 8353311527.73612 on 000102 map 7 used 30/30
+Widths {7^1,8^4095}x15 {8^2,9^3639}x5 {9^3633,10^7}x10
+Finished with key 012345
+Created pruning table corner in 0.0454812049865723
+Solved corner in 0.0012211799621582
+Solved corners in 9 moves.
+Planned optimal 000102 in 26.7346389293671
+Planned optimal 023x1x in 32.409481048584
+strip moves 16785991688 My 32767
+N 65536 width 32767 moves 16785991688 cancel 449003676 blocks 92219532
+N=65536 Estimated average cost is 16786028195.8836
+Mon Oct 12 01:12:10 AM PDT 2026

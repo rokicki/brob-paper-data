@@ -1,0 +1,63 @@
+=== relaunched Thu Oct  8 07:01:46 PM PDT 2026, mem-gb 1250
+setsid: failed to execute ./queue_big_others.sh: Permission denied
+rcube1d n=1073741824 w=1 p=1 run=1 count=1 mean=8.185758687e+18
+rcube1d n=1073741824 w=1 p=1 run=0 count=1 mean=8.185772763e+18
+rcube1d n=1073741824 w=1 p=1 run=2 count=1 mean=8.185784003e+18
+sortnet96 n=1073741824 w=22 p=22 run=1 count=1 mean=2.280476312e+18
+sortnet96 n=1073741824 w=22 p=22 run=0 count=1 mean=2.28049349e+18
+sortnet96 n=1073741824 w=22 p=22 run=2 count=1 mean=2.28048485e+18
+permnet72 n=1073741824 w=22 p=22 run=2 count=1 mean=1.856829891e+18
+permnet72 n=1073741824 w=22 p=22 run=1 count=1 mean=1.856832526e+18
+permnet72 n=1073741824 w=22 p=22 run=0 count=1 mean=1.85683166e+18
+rcube2d n=1073741824 w=28 p=28 run=2 count=1 mean=3.484723977e+18
+FAILED rcube2d n=1073741824 run=1: /home/rokicki/brobpaper/sortnet96/solve96 -x -w 28 -p 28 -z 1073741824001 -M 1 1073741824 failed:
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 28 -p 28 -z 1073741824001 -M 1 1073741824
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+
+FAILED rcube2d n=1073741824 run=0: /home/rokicki/brobpaper/sortnet96/solve96 -x -w 28 -p 28 -z 1073741824000 -M 1 1073741824 failed:
+- /home/rokicki/brobpaper/sortnet96/solve96 -x -w 28 -p 28 -z 1073741824000 -M 1 1073741824
+For sort84 found a swap that only requires 2
+The 8 choose 4 sorting network looks good; have a plan.
+The total cost of the network is 214
+
+sortnet96: 454 sizes
+rcube1d: 453 sizes
+rcube2d: 453 sizes
+permnet72: 453 sizes
+done in 83059 s
+=== 2^30 done
+rcube1d n=536870912 w=1 p=1 run=0 count=1 mean=2.046442428e+18
+rcube1d n=671088640 w=1 p=1 run=0 count=1 mean=3.197556306e+18
+rcube1d n=134217728 w=1 p=2 run=0 count=1 mean=1.279032615e+17
+rcube1d n=67108864 w=1 p=4 run=0 count=1 mean=3.197654505e+16
+rcube1d n=805306368 w=1 p=1 run=0 count=1 mean=4.604483052e+18
+rcube1d n=268435456 w=1 p=1 run=0 count=1 mean=5.116053447e+17
+rcube1d n=33554432 w=1 p=8 run=0 count=1 mean=7.99401873e+15
+sortnet96 n=33554432 w=16 p=16 run=0 count=1 mean=2.850203335e+15
+permnet72 n=33554432 w=16 p=16 run=0 count=1 mean=2.339193228e+15
+rcube2d n=33554432 w=21 p=21 run=0 count=1 mean=4.001338513e+15
+sortnet96 n=67108864 w=18 p=18 run=0 count=1 mean=1.060689828e+16
+rcube2d n=67108864 w=23 p=23 run=0 count=1 mean=1.543399551e+16
+permnet72 n=67108864 w=18 p=18 run=0 count=1 mean=8.697377891e+15
+sortnet96 n=536870912 w=21 p=21 run=0 count=1 mean=5.937016845e+17
+sortnet96 n=671088640 w=21 p=21 run=0 count=1 mean=9.153966638e+17
+permnet72 n=805306368 w=21 p=21 run=0 count=1 mean=1.060307476e+18
+permnet72 n=268435456 w=20 p=20 run=0 count=1 mean=1.264842539e+17
+sortnet96 n=805306368 w=21 p=21 run=0 count=1 mean=1.306267639e+18
+permnet72 n=134217728 w=19 p=19 run=0 count=1 mean=3.312442105e+16
+sortnet96 n=134217728 w=19 p=19 run=0 count=1 mean=4.048212025e+16
+rcube2d n=134217728 w=24 p=24 run=0 count=1 mean=5.974219276e+16
+sortnet96 n=268435456 w=20 p=20 run=0 count=1 mean=1.548653347e+17
+rcube2d n=268435456 w=25 p=25 run=0 count=1 mean=2.315460966e+17
+permnet72 n=536870912 w=21 p=21 run=0 count=1 mean=4.841104407e+17
+permnet72 n=671088640 w=21 p=21 run=0 count=1 mean=7.443799553e+17
+rcube2d n=805306368 w=27 p=27 run=0 count=1 mean=1.984736352e+18
+rcube2d n=536870912 w=27 p=27 run=0 count=1 mean=8.978850458e+17
+rcube2d n=671088640 w=27 p=27 run=0 count=1 mean=1.388840912e+18
+sortnet96: 564 sizes
+rcube1d: 564 sizes
+rcube2d: 564 sizes
+permnet72: 564 sizes
+done in 46497 s

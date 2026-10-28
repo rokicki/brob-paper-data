@@ -1,0 +1,4 @@
+Sat Oct 17 21:59:18 PDT 2026
+model-p1: 481 sizes
+done in 5 s
+python3 scripts/run_brobdicube.py --jobs 8 model-p1  10.29s user 0.26s system 221% cpu 4.758 total

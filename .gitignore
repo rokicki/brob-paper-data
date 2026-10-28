@@ -1,0 +1,20 @@
+brobdicube/brobdicube
+brobdicube/algutil
+brobdicube/findpermnet
+brobdicube/pareto
+brobdicube/test_planmask
+brobdicube/*.dSYM
+brobdicube/.deps
+__pycache__/
+*.aux
+*.bbl
+*.blg
+*.fls
+*.log
+*.out
+# ...but every run log and brobdicube output under data/ belongs in the repo
+!data/**/*.log
+!data/**/*.out
+*.synctex*
+# the paper is not part of this repo (make paper writes to PAPER_OUT)
+/paper/

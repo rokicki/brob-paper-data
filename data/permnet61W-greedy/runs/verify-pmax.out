@@ -1,0 +1,24 @@
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/W61 -g -x -p max -z 65536900 -M 1 65536
+Mon Oct 12 12:42:25 AM PDT 2026
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/W61 -g -x -p max -z 65536900 -M 1 65536
+Loaded 3 algs in 0.00900506973266602
+Estimated average cost is 15654308324.6046
+Use 001111 001111-0024-0048-0070-0152-0112-5e21e890508febcb.alg [greedy] cost 5901780305.88132 on 000000 map 0 used 24/24
+Widths {1^32767}x1 {4^3,5^6551}x1 {8^2,9^3639}x10 {8^4088,9^7}x1 {9^3,10^3274}x11
+Use 01xxxx 01xxxx-0007-0014-0016-0032-0004-57e202be230d60ec2b28c5bb7c7eb0af.alg [greedy] cost 1842391719.99264 on 001111 map 0 used 7/7
+Widths {8^2,9^3639}x1 {9^3,10^3274}x4 {9^3633,10^7}x2
+Use xx0011 0011xx-0016-0032-0068-0087-0016-dd05181c2d212737.alg [greedy] cost 4225352858.7453 on 012222 map 4 used 16/16
+Widths {7^1,8^4095}x5 {7^4681}x1 {8^2,9^3639}x2 {9^3,10^3274}x8
+Use xx10xx 01xxxx-0007-0014-0016-0032-0004-57e202be230d60ec2b28c5bb7c7eb0af.alg [greedy] cost 1842391719.99264 on 012233 map 4 used 7/7
+Widths {8^2,9^3639}x1 {9^3,10^3274}x4 {9^3633,10^7}x2
+Use xxxx10 01xxxx-0007-0014-0016-0032-0004-57e202be230d60ec2b28c5bb7c7eb0af.alg [greedy] cost 1842391719.99264 on 012344 map 12 used 7/7
+Widths {8^2,9^3639}x1 {9^3,10^3274}x4 {9^3633,10^7}x2
+Finished with key 012345
+Created pruning table corner in 0.0485010147094727
+Solved corner in 0.00127911567687988
+Solved corners in 9 moves.
+Planned greedy 001111 in 0.171916007995605
+strip moves 15654357227 My 32767
+N 65536 width 32767 moves 15654357227 cancel 219628033 blocks 148682250
+N=65536 Estimated average cost is 15654308324.6046
+Mon Oct 12 01:10:16 AM PDT 2026

@@ -1,0 +1,310 @@
+<title>Center Moves Explorer</title>
+<style>
+/* layout: control table on the left, plot fills the rest; stacks on phones */
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --fg: #1d2330; --muted: #5d6677;
+  --rule: #d9dde5; --grid: #e6e9ef; --accent: #2f5fd0; --tip: #ffffff;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e3e7ef; --muted: #98a1b3;
+  --rule: #2c323e; --grid: #252a35; --accent: #7fa2ff; --tip: #222733; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12151b; --panel: #1a1e26; --fg: #e3e7ef; --muted: #98a1b3;
+  --rule: #2c323e; --grid: #252a35; --accent: #7fa2ff; --tip: #222733; color-scheme: dark }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 13px/1.4 var(--sans);
+  padding-inline: 16px; padding-block: 12px; box-sizing: border-box;
+  display: flex; flex-direction: column; }
+h1 { font-size: 15px; font-weight: 600; margin: 0 0 2px; }
+.sub { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+.wrap { display: flex; gap: 14px; align-items: stretch; flex: 1 1 auto; min-height: 480px; }
+.ctl { flex: 0 0 auto; align-self: flex-start; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 8px 10px; max-height: 100%; overflow: auto; }
+.plot { flex: 1 1 auto; min-width: 0; position: relative; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 6px; }
+canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+.opts button { font: inherit; padding: 1px 8px; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { font-weight: 500; color: var(--muted); font-size: 10px; line-height: 1.15; text-transform: uppercase;
+  letter-spacing: .03em; padding: 2px 3px; text-align: center; vertical-align: bottom; }
+th button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer;
+  text-transform: uppercase; letter-spacing: .04em; }
+td { padding: 1px 3px; text-align: center; }
+td.name { text-align: left; font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+tr.sep td { border-top: 1px solid var(--rule); padding-top: 4px; }
+.na { color: var(--muted); }
+.opts { display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 4px 6px; align-items: center;
+  margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.opts label { color: var(--muted); font-size: 12px; }
+.opts input[type=number] { width: 100%; min-width: 0; box-sizing: border-box; font: inherit; }
+.opts button { grid-column: 3 / 5; }
+.key { color: var(--muted); font-size: 11px; margin-top: 6px; width: 0; min-width: 100%; }
+#tip { position: absolute; pointer-events: none; background: var(--tip); border: 1px solid var(--rule);
+  border-radius: 4px; padding: 5px 8px; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  white-space: nowrap; font-variant-numeric: tabular-nums; }
+#tip b { font-family: var(--mono); font-weight: 600; }
+#tip .m { color: var(--muted); }
+input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+@media (max-width: 760px) {
+  .wrap { flex-direction: column; height: auto; }
+  .ctl { max-height: none; width: 100%; box-sizing: border-box; overflow-x: auto; }
+  .plot { width: 100%; height: 420px; }
+}
+</style>
+
+<h1>Center moves vs. cube size</h1>
+<p class="sub">moves · lg n / n², against lg n. Solid = worst-case bound, dashed = greedy average, dotted = optimal average, dash-dot = best average (the smaller of greedy and optimal, or the only average). Hover a line to identify it.</p>
+<div class="wrap">
+  <div class="ctl">
+    <table id="tbl"><thead><tr><th></th>
+      <th><button data-col="worst" type="button" title="worst-case bound">worst</button></th>
+      <th><button data-col="greedy" type="button" title="greedy average">greedy</button></th>
+      <th><button data-col="optimal" type="button" title="optimal average">opt</button></th>
+      <th><button data-col="min" type="button" title="best average: min(greedy, optimal) at sizes with both, or the only average">min/<br>avg</button></th>
+    </tr></thead><tbody></tbody></table>
+    <div class="opts">
+      <label for="x0">lg n</label><input id="x0" type="number" step="any" value="2">
+      <label for="x1">to</label><input id="x1" type="number" step="any" value="30">
+      <label for="y0">y</label><input id="y0" type="number" step="any" value="0">
+      <label for="y1">to</label><input id="y1" type="number" step="any" value="210">
+      <label for="lw">width</label><input id="lw" type="number" step="0.25" min="0.25" value="1">
+      <button id="reset" type="button">Reset view</button>
+    </div>
+    <div class="key">Column headers toggle a whole column.<br>Scroll to zoom (shift: lg n only, alt: y only),
+      drag to pan, shift-drag to zoom to a box, double-click to reset.</div>
+  </div>
+  <div class="plot" id="plot"><canvas id="cv"></canvas><div id="tip" hidden></div></div>
+</div>
+
+<script>
+const DATA = /*DATA*/;
+const COLORS = ['#3b6fd8','#e07b22','#2e9e57','#d43d3d','#8a5cc9','#a0673a','#d45fae','#6f7787',
+  '#a9a520','#1fa8b8','#5a8f2a','#b8475f','#4b55b5','#c48a1b','#0f8a74','#9c3fb0'];
+const series = [];   // {id, label, color, style, pts:[[n,m]], on}
+const byCell = {};
+DATA.algorithms.forEach((a, i) => {
+  const color = COLORS[i % COLORS.length];
+  const add = (kind, style, label, pts) => {
+    const s = {id: a.name + ':' + kind, label, color, style, pts, on: false, alg: a.name, kind};
+    series.push(s); byCell[s.id] = s; return s;
+  };
+  add('worst', 'solid', a.name + ' worst case', a.worst);
+  if (a.avg) add('min', 'dashdot', a.name + ' average', a.avg);
+  else { add('greedy', 'dash', a.name + ' greedy average', a.greedy);
+         add('optimal', 'dot', a.name + ' optimal average', a.optimal);
+         const o = new Map(a.optimal.map(p => [p[0], p]));
+         const mn = a.greedy.filter(([n]) => o.has(n)).map(([n, m, note]) => {
+           const q = o.get(n), est = note || q[2] ? ', planner estimate' : '';
+           return q[1] < m ? [n, q[1], 'from optimal' + est] : [n, m, 'from greedy' + est]; });
+         add('min', 'dashdot', a.name + ' min(greedy, optimal)', mn); }
+});
+const REFC = {'lower bound': '#111111', 'center count': '#8b5a2b', '0D upper bound': '#888888'};
+DATA.refs.forEach(r => { const s = {id: 'ref:' + r.name, label: r.name, color: REFC[r.name], style: 'solid',
+  pts: r.pts, on: false, alg: r.name, kind: 'ref', ref: true}; series.push(s); byCell[s.id] = s; });
+
+const DEFAULT_ON = ['rcube1d:worst','rcube1d:min','rcube2d:worst','rcube2d:min','sortnet96:worst',
+  'sortnet96:min','permnet72:worst','permnet72:min','brobdicube:worst','brobdicube:min','brobdicube-p1:worst','brobdicube-p1:min',
+  'ref:lower bound','ref:center count'];
+let saved = null;
+try { saved = JSON.parse(localStorage.getItem('explorer-on2') || 'null'); } catch (e) {}
+(saved || DEFAULT_ON).forEach(id => { if (byCell[id]) byCell[id].on = true; });
+function save() { try { localStorage.setItem('explorer-on2', JSON.stringify(series.filter(s => s.on).map(s => s.id))); } catch (e) {} }
+
+// control table
+const tb = document.querySelector('#tbl tbody');
+function cb(s) {
+  const td = document.createElement('td');
+  if (!s) { td.className = 'na'; td.textContent = '·'; return td; }
+  const c = document.createElement('input'); c.type = 'checkbox'; c.id = 'cb-' + s.id.replace(/[^\w]/g, '_');
+  c.checked = s.on; c.setAttribute('aria-label', s.label);
+  c.addEventListener('change', () => { s.on = c.checked; save(); draw(); });
+  s.box = c; td.appendChild(c); return td;
+}
+function row(name, color, cells, cls) {
+  const tr = document.createElement('tr'); if (cls) tr.className = cls;
+  const td = document.createElement('td'); td.className = 'name';
+  td.innerHTML = '<span class="sw" style="background:' + color + '"></span>' + name;
+  tr.appendChild(td); cells.forEach(x => tr.appendChild(x)); tb.appendChild(tr);
+}
+DATA.algorithms.forEach(a => {
+  const w = byCell[a.name + ':worst'], g = byCell[a.name + ':greedy'], o = byCell[a.name + ':optimal'];
+  const mn = byCell[a.name + ':min'];
+  if (a.avg) row(a.name, w.color, [cb(w), document.createElement('td'), document.createElement('td'), cb(mn)]);
+  else row(a.name, w.color, [cb(w), cb(g), cb(o), cb(mn)]);
+});
+DATA.refs.forEach((r, i) => { const s = byCell['ref:' + r.name]; const t = cb(s);
+  row(r.name, s.color, [t, document.createElement('td'), document.createElement('td'),
+    document.createElement('td')], i === 0 ? 'sep' : ''); });
+document.querySelectorAll('th button').forEach(b => b.addEventListener('click', () => {
+  const col = b.dataset.col;
+  const cells = series.filter(s => !s.ref && s.kind === col);
+  const any = cells.some(s => !s.on);
+  cells.forEach(s => { s.on = any; s.box.checked = any; }); save(); draw(); }));
+const HOME = {x0: 2, x1: 30, y0: 0, y1: 210};
+const view = Object.assign({}, HOME);
+const VK = ['x0','x1','y0','y1'];
+function showView() { VK.forEach(k => { const e = document.getElementById(k);
+  if (document.activeElement !== e) e.value = +view[k].toPrecision(5); }); }
+VK.forEach(k => document.getElementById(k).addEventListener('input', e => {
+  const v = parseFloat(e.target.value); if (isFinite(v)) { view[k] = v; draw(); } }));
+document.getElementById('lw').addEventListener('input', draw);
+document.getElementById('reset').addEventListener('click', () => { Object.assign(view, HOME); showView(); draw(); });
+
+// plot
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d'), tip = document.getElementById('tip');
+let geom = null, hot = null;
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const yval = (n, m) => m * Math.log2(n) / (n * n);
+function num(id, d) { const v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : d; }
+
+function draw() {
+  const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const W = r.width, H = r.height, L = 48, R = 12, T = 10, B = 34;
+  let {x0, x1, y0, y1} = view;
+  if (!(x1 > x0)) x1 = x0 + 1; if (!(y1 > y0)) y1 = y0 + 1;
+  const X = x => L + (x - x0) / (x1 - x0) * (W - L - R), Y = y => H - B - (y - y0) / (y1 - y0) * (H - T - B);
+  const IX = px => x0 + (px - L) / (W - L - R) * (x1 - x0), IY = py => y0 + (H - B - py) / (H - T - B) * (y1 - y0);
+  geom = {X, Y, IX, IY, x0, x1, y0, y1, L, R, T, B, W, H};
+  ctx.fillStyle = css('--panel'); ctx.fillRect(0, 0, W, H);
+  ctx.font = '11px ' + css('--sans'); ctx.lineWidth = 1;
+  // grid and ticks
+  const xs = nice((x1 - x0) / Math.max(2, (W - L - R) / 70)), ys = nice((y1 - y0) / Math.max(2, (H - T - B) / 40));
+  ctx.strokeStyle = css('--grid'); ctx.fillStyle = css('--muted');
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (let i = Math.ceil(x0 / xs); i * xs <= x1 + xs * 1e-9; i++) { const x = i * xs;
+    ctx.beginPath(); ctx.moveTo(X(x) + .5, T); ctx.lineTo(X(x) + .5, H - B); ctx.stroke();
+    ctx.fillText(lab(x, xs), X(x), H - B + 4); }
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (let i = Math.ceil(y0 / ys); i * ys <= y1 + ys * 1e-9; i++) { const y = i * ys;
+    ctx.beginPath(); ctx.moveTo(L, Y(y) + .5); ctx.lineTo(W - R, Y(y) + .5); ctx.stroke();
+    ctx.fillText(lab(y, ys), L - 5, Y(y)); }
+  ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText('lg n', (L + W - R) / 2, H - 2);
+  ctx.save(); ctx.translate(11, (T + H - B) / 2); ctx.rotate(-Math.PI / 2); ctx.textBaseline = 'middle';
+  ctx.fillText('moves · lg n / n²', 0, 0); ctx.restore();
+  // series
+  ctx.save(); ctx.beginPath(); ctx.rect(L, T, W - L - R, H - T - B); ctx.clip();
+  const lw = Math.max(0.25, num('lw', 1));
+  const dark = css('--bg').toLowerCase() === '#12151b';
+  for (const s of series) {
+    if (!s.on) continue;
+    s.px = s.pts.map(([n, m]) => [X(Math.log2(n)), Y(yval(n, m))]);
+    if (s === hot) continue;
+    stroke(s, lw, dark);
+  }
+  if (hot && hot.on) stroke(hot, lw * 2.5, dark);
+  ctx.restore();
+  if (box) { ctx.strokeStyle = css('--accent'); ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+    ctx.strokeRect(Math.min(box.ax, box.bx), Math.min(box.ay, box.by), Math.abs(box.bx - box.ax), Math.abs(box.by - box.ay));
+    ctx.setLineDash([]); }
+  if (hot && hot.on && hot.mark != null) {
+    const [px, py] = hot.px[hot.mark];
+    ctx.fillStyle = color(hot, dark); ctx.beginPath(); ctx.arc(px, py, 3.5, 0, 7); ctx.fill();
+  }
+}
+function nice(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; }
+function lab(v, step) { const d = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+  return Math.abs(v) < step * 1e-6 ? '0' : v.toFixed(d); }
+function color(s, dark) { return (s.ref && dark && s.label === 'lower bound') ? '#d8dce4' : s.color; }
+function stroke(s, lw, dark) {
+  ctx.strokeStyle = color(s, dark); ctx.lineWidth = lw;
+  ctx.setLineDash(s.style === 'dash' ? [5 * lw + 2, 3 * lw + 1] : s.style === 'dot' ? [lw, 2 * lw + 1.5] :
+    s.style === 'dashdot' ? [6 * lw + 2, 2 * lw + 1.5, lw, 2 * lw + 1.5] : []);
+  ctx.lineCap = s.style === 'dot' ? 'round' : 'butt';
+  ctx.beginPath(); s.px.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke();
+  ctx.setLineDash([]);
+}
+// worst / average at size n for the hovered series' algorithm
+function ratios(s, n) {
+  if (s.ref) return '';
+  const val = k => { const t = byCell[s.alg + ':' + k]; if (!t) return null;
+    if (!t.map) t.map = new Map(t.pts.map(p => [p[0], p[1]])); return t.map.get(n) ?? null; };
+  const w = val('worst'); if (w == null) return '';
+  const names = {greedy: 'greedy', optimal: 'optimal', min: byCell[s.alg + ':greedy'] ? 'min' : 'average'};
+  const ks = s.kind === 'worst' ? ['greedy', 'optimal', 'min'] : [s.kind];
+  const out = ks.map(k => { const a = val(k); return a ? 'worst / ' + names[k] + ' = ' + (w / a).toFixed(3) : null; })
+    .filter(Boolean);
+  return out.length ? '<br>' + out.join('<br>') : '';
+}
+function segDist(px, py, a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy;
+  let t = l ? ((px - a[0]) * dx + (py - a[1]) * dy) / l : 0; t = Math.max(0, Math.min(1, t));
+  const x = a[0] + t * dx, y = a[1] + t * dy; return Math.hypot(px - x, py - y);
+}
+const fmt = v => v >= 1e15 ? v.toExponential(4) : v >= 100 ? Math.round(v).toLocaleString('en-US') : v.toPrecision(5);
+// zoom and pan
+let drag = null, box = null;
+function zoomAt(mx, my, fx, fy) {
+  const cx = geom.IX(mx), cy = geom.IY(my);
+  view.x0 = cx + (view.x0 - cx) * fx; view.x1 = cx + (view.x1 - cx) * fx;
+  view.y0 = cy + (view.y0 - cy) * fy; view.y1 = cy + (view.y1 - cy) * fy;
+  showView(); draw();
+}
+cv.addEventListener('wheel', ev => {
+  ev.preventDefault();
+  const r = cv.getBoundingClientRect(), f = Math.exp(Math.max(-1, Math.min(1, ev.deltaY / 300)));
+  zoomAt(ev.clientX - r.left, ev.clientY - r.top, ev.altKey ? 1 : f, ev.shiftKey ? 1 : f);
+}, {passive: false});
+cv.addEventListener('pointerdown', ev => {
+  if (ev.button !== 0) return;
+  const r = cv.getBoundingClientRect(), mx = ev.clientX - r.left, my = ev.clientY - r.top;
+  cv.setPointerCapture(ev.pointerId);
+  if (ev.shiftKey) box = {ax: mx, ay: my, bx: mx, by: my};
+  else drag = {mx, my, v: Object.assign({}, view), g: geom};
+});
+cv.addEventListener('pointerup', () => {
+  if (box && Math.abs(box.bx - box.ax) > 4 && Math.abs(box.by - box.ay) > 4) {
+    const xa = geom.IX(box.ax), xb = geom.IX(box.bx), ya = geom.IY(box.ay), yb = geom.IY(box.by);
+    Object.assign(view, {x0: Math.min(xa, xb), x1: Math.max(xa, xb), y0: Math.min(ya, yb), y1: Math.max(ya, yb)});
+    showView();
+  }
+  drag = null; box = null; cv.style.cursor = ''; draw();
+});
+cv.addEventListener('dblclick', () => { Object.assign(view, HOME); showView(); draw(); });
+cv.addEventListener('pointermove', ev => {
+  const r = cv.getBoundingClientRect(), mx = ev.clientX - r.left, my = ev.clientY - r.top;
+  if (box) { box.bx = mx; box.by = my; tip.hidden = true; hot = null; draw(); return; }
+  if (drag) {
+    const g = drag.g, dx = (mx - drag.mx) / (g.W - g.L - g.R) * (drag.v.x1 - drag.v.x0),
+      dy = (my - drag.my) / (g.H - g.T - g.B) * (drag.v.y1 - drag.v.y0);
+    Object.assign(view, {x0: drag.v.x0 - dx, x1: drag.v.x1 - dx, y0: drag.v.y0 + dy, y1: drag.v.y1 + dy});
+    cv.style.cursor = 'grabbing'; tip.hidden = true; hot = null; showView(); draw(); return;
+  }
+  let best = null, bd = 10;
+  for (const s of series) {
+    if (!s.on || !s.px) continue;
+    for (let i = 1; i < s.px.length; i++) {
+      const a = s.px[i - 1], b = s.px[i];
+      if (Math.max(a[0], b[0]) < mx - bd || Math.min(a[0], b[0]) > mx + bd) continue;
+      const d = segDist(mx, my, a, b); if (d < bd) { bd = d; best = s; }
+    }
+    if (s.px.length === 1 && Math.hypot(mx - s.px[0][0], my - s.px[0][1]) < bd) { bd = 0; best = s; }
+  }
+  if (best) {   // nearest actual data point along x
+    let k = 0, kd = Infinity;
+    best.px.forEach(([x], i) => { const d = Math.abs(x - mx); if (d < kd) { kd = d; k = i; } });
+    best.mark = k;
+    const [n, m, which] = best.pts[k];
+    tip.innerHTML = '<b>' + best.label + '</b><br>n = ' + n.toLocaleString('en-US') +
+      ' <span class="m">(lg n = ' + Math.log2(n).toFixed(2) + ')</span><br>' + fmt(m) +
+      ' moves <span class="m">· y = ' + yval(n, m).toFixed(2) + '</span>' +
+      (which ? '<br><span class="m">' + which + '</span>' : '') + ratios(best, n);
+    tip.hidden = false;
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    tip.style.left = Math.min(mx + 14, r.width - tw - 4) + 'px';
+    tip.style.top = (my - th - 10 < 0 ? my + 16 : my - th - 10) + 'px';
+  } else tip.hidden = true;
+  if (best !== hot) { hot = best; }
+  draw();
+});
+cv.addEventListener('pointerleave', () => { if (drag || box) return; hot = null; tip.hidden = true; draw(); });
+window.addEventListener('resize', draw);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+new MutationObserver(draw).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
+draw();
+</script>

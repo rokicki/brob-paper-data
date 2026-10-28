@@ -1,0 +1,13 @@
+sim n=134217728 p=64 run=0 count=1 mean=3.022058388e+16
+sim n=33554432 p=64 run=0 count=1 mean=2.098951024e+15
+sim n=67108864 p=64 run=0 count=1 mean=7.952983369e+15
+sim n=1073741824 p=64 run=0 count=1 mean=1.675558659e+18
+sim n=268435456 p=64 run=0 count=1 mean=1.149770445e+17
+sim n=671088640 p=64 run=0 count=1 mean=6.745662606e+17
+sim n=536870912 p=64 run=0 count=1 mean=4.385811954e+17
+sim n=805306368 p=64 run=0 count=1 mean=9.594156086e+17
+done in 181730 s
+sim n=33554432 p=64 run=1 count=1 mean=2.098976231e+15
+sim n=67108864 p=64 run=1 count=1 mean=7.952983094e+15
+sim n=134217728 p=64 run=1 count=1 mean=3.022058586e+16
+done in 8754 s

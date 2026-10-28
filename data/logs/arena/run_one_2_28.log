@@ -1,0 +1,3 @@
+WARNING: strip width w=25 needs 33554432 pattern slots per strip per stage
+WARNING: strip width w=26 needs 67108864 pattern slots per strip per stage
+done n=268435456 run=1 moves=114977104638652896

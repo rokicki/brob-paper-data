@@ -1,0 +1,81 @@
+=== start Tue Oct 13 12:23:35 AM PDT 2026
+permnet72-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.390555567e+17
+permnet62-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.175044926e+17
+permnet72-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.647706757e+16
+permnet63-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.293982228e+16
+permnet64-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.085690017e+16
+permnet63-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.059149384e+16
+permnet64-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.350357974e+16
+permnet72-optimal n=536870912 w=21 p=21 run=0 count=1 mean=5.312643016e+17
+permnet65-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.068953086e+16
+permnet65-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.341032759e+16
+permnet62-optimal n=536870912 w=21 p=21 run=0 count=1 mean=4.82353215e+17
+permnet63-optimal n=536870912 w=21 p=21 run=0 count=1 mean=4.803788565e+17
+permnet66-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.159213627e+16
+permnet66-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.444032296e+16
+permnet62-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.499727853e+17
+permnet63-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.470679724e+17
+permnet64-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.511626522e+17
+permnet62-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.303298612e+16
+permnet72-optimal n=67108864 w=18 p=18 run=0 count=1 mean=9.591651408e+15
+permnet67-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.1424933e+16
+permnet62-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.072751601e+15
+permnet62-optimal n=67108864 w=18 p=18 run=0 count=1 mean=8.677159749e+15
+permnet62-greedy n=134217728 w=19 p=19 run=0 count=1 mean=3.075869453e+16
+permnet67-optimal n=134217728 w=19 p=19 run=0 count=1 mean=3.434734897e+16
+permnet63-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.033061055e+15
+permnet72-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.590899239e+15
+permnet62-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.140161886e+15
+permnet64-optimal n=67108864 w=18 p=18 run=0 count=1 mean=8.805814264e+15
+permnet64-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.100737954e+15
+permnet63-optimal n=67108864 w=18 p=18 run=0 count=1 mean=8.658145073e+15
+permnet65-optimal n=67108864 w=18 p=18 run=0 count=1 mean=8.786830175e+15
+permnet62-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.297839859e+15
+permnet65-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.061008645e+15
+permnet66-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.292679239e+15
+permnet63-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.146805508e+15
+permnet66-optimal n=67108864 w=18 p=18 run=0 count=1 mean=9.053138509e+15
+permnet67-optimal n=67108864 w=18 p=18 run=0 count=1 mean=9.034140696e+15
+permnet63-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.313632779e+15
+permnet67-greedy n=67108864 w=18 p=18 run=0 count=1 mean=8.252972471e+15
+permnet64-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.350570098e+15
+permnet64-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.159620735e+15
+permnet65-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.366362181e+15
+permnet65-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.16626406e+15
+permnet66-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.21307332e+15
+permnet66-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.420145146e+15
+permnet67-greedy n=33554432 w=16 p=16 run=0 count=1 mean=2.219717251e+15
+permnet67-optimal n=33554432 w=16 p=16 run=0 count=1 mean=2.435946708e+15
+permnet66-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.313527586e+17
+permnet63-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.168061669e+17
+permnet65-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.273636323e+17
+permnet64-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.17847615e+17
+permnet65-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.171494563e+17
+permnet67-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.199699848e+17
+permnet62-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.260800317e+17
+permnet63-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.256438402e+17
+permnet67-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.309171768e+17
+permnet66-greedy n=268435456 w=20 p=20 run=0 count=1 mean=1.206681278e+17
+permnet64-optimal n=268435456 w=20 p=20 run=0 count=1 mean=1.277994239e+17
+permnet64-optimal n=536870912 w=21 p=21 run=0 count=1 mean=4.886271036e+17
+permnet66-optimal n=536870912 w=21 p=21 run=0 count=1 mean=5.021200781e+17
+permnet65-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.482581383e+17
+permnet67-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.590937566e+17
+permnet65-optimal n=536870912 w=21 p=21 run=0 count=1 mean=4.866541895e+17
+permnet66-greedy n=536870912 w=21 p=21 run=0 count=1 mean=4.619997195e+17
+permnet67-optimal n=536870912 w=21 p=21 run=0 count=1 mean=5.001465703e+17
+permnet72-optimal: 679 sizes
+permnet62-greedy: 678 sizes
+permnet62-optimal: 678 sizes
+permnet63-greedy: 678 sizes
+permnet63-optimal: 678 sizes
+permnet64-greedy: 678 sizes
+permnet64-optimal: 678 sizes
+permnet65-greedy: 678 sizes
+permnet65-optimal: 678 sizes
+permnet66-greedy: 678 sizes
+permnet66-optimal: 678 sizes
+permnet67-greedy: 678 sizes
+permnet67-optimal: 678 sizes
+done in 26983 s
+=== pow2 fill done Tue Oct 13 07:53:17 AM PDT 2026

@@ -1,0 +1,12 @@
+# Worst-case decompositions picked by brobdicube, by n (from data/brobdicube/runs/worst.out)
+# 481 logged sizes, n = 4..1073741824; ranges overlap where the choice alternates
+# steps: key as applied, then stages used (greedy) or opt (optimal, any length);
+# total = stages used in all steps, lowest-highest where it varies
+      from n         to n    picked     total  steps
+           4           14       6/6        67  010101 27  0x1x2x 20  x1x2x0 20
+          16          256    95/121        65  011110 26  1xxxx0 7  x0101x 18  x0x1xx 7  xx0x1x 7
+         146          362     34/64        64  011110 26  1xxxx0 7  x0011x 17  x10xxx 7  xxx10x 7
+         378         8934     70/74        63  011110 25  1xxxx0 7  x0011x 17  x10xxx 7  xxx10x 7
+        4870       262144     64/93        62  011110 24  1xxxx0 7  x0011x 17  x10xxx 7  xxx10x 7
+       21248       298526     21/62        62  011110 24  1xxxx0 7  x0101x 17  x0x1xx 7  xx0x1x 7
+      311744   1073741824   191/191        61  001111 24  01xxxx 7  xx0011 16  xx10xx 7  xxxx10 7

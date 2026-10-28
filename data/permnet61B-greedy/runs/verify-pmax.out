@@ -1,0 +1,21 @@
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/A61b -g -x -p max -z 65536900 -M 1 65536
+Mon Oct 12 12:42:25 AM PDT 2026
+- /home/rokicki/brobpaper/brobdicube/brobdicube -t 1 -D /home/rokicki/brobpaper/brobdicube/nets/A61b -g -x -p max -z 65536900 -M 1 65536
+Loaded 2 algs in 3.61906480789185
+Estimated average cost is 15601596641.7015
+Use 000102 000102-0031-0062-0111-0219-0226-9192634ddcd6bedb.alg [greedy] cost 7754036841.01689 on 000000 map 0 used 31/31
+Widths {1^32767}x1 {23^17,24^1349}x1 {5^6551,6^2}x1 {7^1,8^4095}x4 {8^2,9^3639}x13 {8^4088,9^7}x1 {9^3,10^3274}x10
+Use 023x1x 0123xx-0030-0060-0135-0201-0086-6ee1ba4f7cb1797b.alg [greedy] cost 7847559800.68465 on 000102 map 7 used 30/30
+Widths {1^32767}x2 {7^1,8^4095}x13 {8^2,9^3639}x5 {9^3,10^3274}x10
+Finished with key 012345
+Created pruning table corner in 0.0462250709533691
+Solved corner in 0.00123906135559082
+Solved corners in 9 moves.
+Planned greedy 000102 in 25.3602719306946
+WARNING: strip width w=23 needs 8388608 pattern slots per strip per stage
+WARNING: strip width w=24 needs 16777216 pattern slots per strip per stage
+Planned greedy 023x1x in 31.5562090873718
+strip moves 15601592040 My 32767
+N 65536 width 32767 moves 15601592040 cancel 473378602 blocks 118831819
+N=65536 Estimated average cost is 15601596641.7015
+Mon Oct 12 01:12:53 AM PDT 2026

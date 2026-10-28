@@ -1,0 +1,18 @@
+Exact worst-case cost is 552
+=== exact worst start Fri Oct  9 08:41:47 AM PDT 2026
+worst: 481 sizes
+done in 14 s
+permnet61W-greedy model: 481 sizes
+permnet61W-greedy worst: 481 sizes
+permnet61W-optimal model: 481 sizes
+permnet61W-optimal worst: 481 sizes
+permnet61A-greedy model: 481 sizes
+permnet61A-greedy worst: 481 sizes
+permnet61A-optimal model: 481 sizes
+permnet61A-optimal worst: 481 sizes
+permnet61B-greedy model: 481 sizes
+permnet61B-greedy worst: 481 sizes
+permnet61B-optimal model: 481 sizes
+permnet61B-optimal worst: 481 sizes
+done in 17 s
+=== exact worst done Fri Oct  9 08:42:19 AM PDT 2026
