@@ -110,8 +110,9 @@ n²/lg(n−2), (n−2)²/lg n or (n−2)²/lg(n−2); `--scale all` draws all fo
 
 ## The other solvers
 
-brobdicube's own curves are labelled **permnet61** (the submitted paper's
-best solver was permnet62).  The other four solvers are regenerated from the
+brobdicube's own curves are labelled **brobdicube** (the submitted paper's
+best solver was permnet62; brobdicube picks its network per n, so it is
+not one fixed permnet).  The other four solvers are regenerated from the
 two older programs here (`make others bounds`); where `data/<solver>/` has
 no file yet, the previously collected data in `data/legacy/` is used and
 the scripts say so.

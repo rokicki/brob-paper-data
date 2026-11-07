@@ -1,4 +1,4 @@
-n,lower,0D_upper,rcube1d_upper,rcube2d_upper,sortnet96_upper,permnet72_upper,permnet61_upper
+n,lower,0D_upper,rcube1d_upper,rcube2d_upper,sortnet96_upper,permnet72_upper,brobdicube_upper
 4,11,144,200,200,876,655,552
 8,76,1296,1704,1704,3564,2671,2428
 16,354,7056,8104,8104,11820,8863,8175

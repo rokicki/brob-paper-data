@@ -17,9 +17,9 @@ of results.txt grouped by algorithm, plus the reference lines, as JSON.
      data/brobdicube/runs/{worst,model}-p1.csv: the worst case (15 digits; brobdicube prints the exact integer only when the strip is the whole cube) and
      the planner's average estimate (tagged 'planner estimate'; not
      simulated).
-  refs: lower bound, center count 6(n-2)^2, 0D upper bound 10(n-2)^2
-     (user, 2026-10-09; the paper's tables and graph still use
-     common.upper0d = 36(n-2)^2), at every MODEL_N size.
+  refs: lower bound, center count 6(n-2)^2, 0D upper bound
+     common.upper0d = 36(n-2)^2, the same as the paper's tables and graph
+     (user, 2026-11-06), at every MODEL_N size.
 
 Only even n >= 4.  Writes figures/explorer_data.json, or the path given, and
 figures/explorer.html (figures/explorer.src.html with the data inlined).
@@ -31,7 +31,7 @@ import sys
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import ROOT, centers, lower   # noqa: E402
+from common import ROOT, centers, lower, upper0d   # noqa: E402
 from sizes import MODEL_N   # noqa: E402
 
 ORDER = ['rcube1d', 'rcube2d', 'sortnet96', 'permnet72'] + \
@@ -92,7 +92,7 @@ def main():
     ns = [n for n in MODEL_N if n >= 4 and n % 2 == 0]
     refs = [{'name': 'lower bound', 'pts': [[n, lower(n)] for n in ns]},
             {'name': 'center count', 'pts': [[n, centers(n)] for n in ns]},
-            {'name': '0D upper bound', 'pts': [[n, 10 * (n - 2) ** 2] for n in ns]}]
+            {'name': '0D upper bound', 'pts': [[n, upper0d(n)] for n in ns]}]
     with open(out, 'w') as fp:
         json.dump({'algorithms': algs, 'refs': refs}, fp, separators=(',', ':'))
     print('%s: %d algorithms' % (out, len(algs)))

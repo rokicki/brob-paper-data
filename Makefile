@@ -57,7 +57,7 @@ check:
 	fi
 
 paper: figures tables
-	$(PYTHON) scripts/update_paper.py $(PAPER_SRC) $(PAPER_OUT) --label permnet61
+	$(PYTHON) scripts/update_paper.py $(PAPER_SRC) $(PAPER_OUT) --label brobdicube
 
 # Re-import the previously collected data (already committed in data/legacy).
 legacy:

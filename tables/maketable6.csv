@@ -1,4 +1,4 @@
-n,lower,0D_upper,rcube1d_upper,rcube2d_upper,sortnet96_upper,permnet72_upper,permnet61_upper,rcube1d_sim,rcube2d_sim,sortnet96_sim,permnet72_sim,permnet61_sim
+n,lower,0D_upper,rcube1d_upper,rcube2d_upper,sortnet96_upper,permnet72_upper,brobdicube_upper,rcube1d_sim,rcube2d_sim,sortnet96_sim,permnet72_sim,brobdicube_sim
 4,0.458333,6,8.33333,8.33333,36.5,27.2917,23,5.23263,5.23263,9.023,10.0459,3.89652
 8,0.351852,6,7.88889,7.88889,16.5,12.3657,11.2407,4.67334,4.45986,5.99111,6.11489,3.70958
 16,0.30102,6,6.89116,6.89116,10.051,7.53656,6.95153,3.9646,3.90689,4.58845,4.47842,3.38424

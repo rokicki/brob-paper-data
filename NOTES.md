@@ -1,7 +1,7 @@
 # Differences from the published numbers, and statements to recheck
 
 Generated with `make check` (`scripts/compare_tables.py`) against the
-submitted `main.tex`.  Only the brobdicube column (permnet62 in the submitted paper, permnet61
+submitted `main.tex`.  Only the brobdicube column (permnet62 in the submitted paper, brobdicube
 now) changes, apart from the lower-bound column (see below); the other solvers' columns still come from `olddata/` and match the
 published tables.
 
@@ -67,7 +67,7 @@ Discrete upper-bound table (even n ≤ 100): centers drop by 33% at n=4
   scale the 2D bounds start low and peak around n ≈ 16–32.  Reread with the
   new figure.
 * **Name (applied in the paper copy):** every "permnet62" is now
-  "permnet61" (graph, tables, Section beyond3cycles, the lemma, Sec. 6/7
+  "brobdicube" (was "permnet61" until 2026-11-06) (graph, tables, Section beyond3cycles, the lemma, Sec. 6/7
   text, the master-sequence appendix and its label keys).  Only the name
   changed: the lemma still says "L = 26 + 2·18 = 62 stages" and constant
   31, and the appendix tables still list the 26 + 18 stage networks, so

@@ -85,14 +85,14 @@ def series(path, col='moves'):
 
 
 # Solvers in display order: key, label, color.  The "brobdicube" entry is the
-# solver in this repository (labelled permnet61 in the paper) and replaces the
-# old permnet62 data.
+# solver in this repository (labelled brobdicube in the paper; user,
+# 2026-11-06) and replaces the old permnet62 data.
 SOLVERS = [
     ('rcube1d', 'rcube1d', 'blue'),
     ('rcube2d', 'rcube2d', 'orange'),
     ('sortnet96', 'sortnet96', 'green'),
     ('permnet72', 'permnet72', 'red'),
-    ('brobdicube', 'permnet61', 'purple'),
+    ('brobdicube', 'brobdicube', 'purple'),
 ]
 
 

@@ -3,7 +3,7 @@
 Draw the main graph (Figure main-graph): center move counts normalized by
 n^2 / lg n against lg n, with the number of center cubies 6(n-2)^2 scaled the
 same way for reference.  Solid lines are worst-case upper bounds, dashed lines
-simulated averages.
+simulated averages.  Lines, and the legend's sample lines, are LW wide.
 
 Writes figures/main_graph.{pdf,png}; --scale lgn2 writes main_graph_lgn2.*,
 --scale all writes scaling_compare.* (the four normalizations, 2x2).
@@ -16,11 +16,14 @@ import sys
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt   # noqa: E402
+from matplotlib.lines import Line2D   # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import (ROOT, SOLVERS, centers, graph_y, lower, solver_data,   # noqa: E402
                     upper0d)
 from sizes import MODEL_N   # noqa: E402
+
+LW = 0.65  # line width: 1.3 x a third of matplotlib's default 1.5 (user, 2026-11-06)
 
 
 YLABEL = {'lgn': r'moves $\cdot\,\lg n\,/\,(n-2)^2$',
@@ -37,12 +40,12 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
     """Draw all curves on ax; returns the series that use legacy data."""
     ns = MODEL_N
     xs = [math.log2(n) for n in ns]
-    ax.plot(xs, [graph_y(n, lower(n), scale) for n in ns], color='black', label='lower')
-    ax.plot(xs, [graph_y(n, upper0d(n), scale) for n in ns], color='gray', label='0D_upper')
+    ax.plot(xs, [graph_y(n, lower(n), scale) for n in ns], color='black', lw=LW, label='lower')
+    ax.plot(xs, [graph_y(n, upper0d(n), scale) for n in ns], color='gray', lw=LW, label='0D_upper')
     if show_centers:
         # the number of center cubies, 6(n-2)^2, as if it were a move count
         ax.plot(xs, [graph_y(n, centers(n), scale) for n in ns], ':', color='saddlebrown',
-                label='center count')
+                lw=LW, label='center count')
     legacy = []
     for key, label, color in SOLVERS:
         if brob == 'legacy' and key == 'brobdicube':
@@ -55,7 +58,7 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
                 legacy.append('%s_%s' % (label, kind))
             pts = [(math.log2(n), graph_y(n, m, scale)) for n, m in curve
                    if n >= 4 and n % 2 == 0]
-            ax.plot([p[0] for p in pts], [p[1] for p in pts], style, color=color,
+            ax.plot([p[0] for p in pts], [p[1] for p in pts], style, color=color, lw=LW,
                     label='%s_%s' % (label, kind))
     ax.set_xlim(0, 30)
     ax.set_ylim(0, ymax)
@@ -65,9 +68,22 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
     if legend == 'inside':
         ax.legend(loc='upper center', fontsize=6)
     elif legend:
-        # lower right, pulled in a little so the curves' right-hand ends show,
-        # but kept clear of where sortnet96_upper crosses rcube2d_sim
-        ax.legend(loc='lower right', bbox_to_anchor=(0.91, 0.0), fontsize=6)
+        # at the top in two columns (user, 2026-11-06), with the original
+        # labels: the bounds on the left, the averages on the right, each
+        # solver's two on one row (user, 2026-11-06).  In the gap between where the 0D and rcube1d
+        # bounds leave the top and where rcube2d_upper comes back in; it clears
+        # sortnet96_upper and clips a little of the straight stretch of
+        # rcube2d_upper (= rcube1d_upper there) instead (user, 2026-11-06).
+        # A blank entry pads the right column so that rows line up.
+        lines = {l.get_label(): l for l in ax.get_lines()}
+        lines[' '] = Line2D([], [], alpha=0)
+        order = ['lower', '0D_upper'] + \
+            [k for k in lines if k.endswith('_upper') and k != '0D_upper'] + \
+            ['center count' if show_centers else ' ', ' '] + \
+            [k for k in lines if k.endswith('_sim')]
+        ax.legend([lines[k] for k in order], order, loc='upper center', bbox_to_anchor=(0.43, 1.0),
+                  ncol=2, fontsize=5.5, framealpha=0.9, handlelength=1.8, labelspacing=0.25,
+                  columnspacing=0.8, borderaxespad=0.3)
     return legacy
 
 
