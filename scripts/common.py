@@ -16,15 +16,15 @@ def centers(n):
 
 
 def lower(n):
-    """Information-theoretic lower bound on center moves, exactly as
-    bounds/lb.py (olddata/bounds/lb.txt): the smallest L with
+    """Information-theoretic lower bound on center moves (the formula of
+    olddata/bounds/lb.py): the smallest L with
         9(n-2) * (9n-3)^(L-1) >= (24!/(4!)^6)^o,   o = (n-2)//2 * ((n-2)-(n-2)//2).
     The right side counts the center states (o independent orbits).  In slice
     turn metric there are 9n moves (3 axes x n layers x 3 turns); turning the
     layer just turned again is never useful, so each move has 9n-3 useful
     successors.  For centers only, a face turn is never a useful last move, so
     counting backwards from the solved state the first choice is among the
-    9(n-2) inner-slice moves.  Reproduces every value in lb.txt."""
+    9(n-2) inner-slice moves."""
     m = n - 2
     o = (m // 2) * (m - m // 2)
     b = 9 * n - 3
@@ -38,13 +38,6 @@ def lower(n):
         while 9 * m * b ** (L - 1) < S:
             L += 1
     return L
-
-
-def lower_published_tables(n):
-    """The lower-bound column of the submitted paper's tables, which used
-    branching factor 9n-22 and no rounding up (reverse-engineered; it
-    reproduces every published value).  Only used to reproduce those tables."""
-    return (n / 2 - 1) ** 2 * LG_ORBIT / math.log2(9 * n - 22)
 
 
 def upper0d(n):
@@ -61,10 +54,10 @@ def wings_ub(n):
 
 def graph_y(n, moves, scale='lgn'):
     """Graph normalization:
-      'lgn'     moves * lg n / (n-2)^2       (what the published graph plots)
+      'lgnn2'   moves * lg n / n^2           (the main graph)
+      'lgn'     moves * lg n / (n-2)^2
       'lgn2'    moves * lg(n-2) / (n-2)^2
-      'lgn2n2'  moves * lg(n-2) / n^2        (what its axis label intended)
-      'lgnn2'   moves * lg n / n^2"""
+      'lgn2n2'  moves * lg(n-2) / n^2"""
     if scale == 'lgnn2':
         return moves * math.log2(n) / n ** 2
     if scale == 'lgn':
@@ -84,9 +77,7 @@ def series(path, col='moves'):
     return {int(float(r['n'])): float(r[col]) for r in read_csv(path)}
 
 
-# Solvers in display order: key, label, color.  The "brobdicube" entry is the
-# solver in this repository (labelled brobdicube in the paper; user,
-# 2026-11-06) and replaces the old permnet62 data.
+# Solvers in display order: key, label, color.
 SOLVERS = [
     ('rcube1d', 'rcube1d', 'blue'),
     ('rcube2d', 'rcube2d', 'orange'),
@@ -96,42 +87,27 @@ SOLVERS = [
 ]
 
 
-def solver_data(key, kind, brob='new'):
+def solver_data(key, kind):
     """
-    Data for one solver and kind ('upper' or 'sim') as (table, curve, source):
+    Data for one solver and kind ('upper' or 'sim') as (table, curve):
       table  {n: moves},
-      curve  sorted [(n, moves)] for the graph,
-      source 'new' or 'legacy'.
-    Fresh results for the other solvers go in data/<solver>/<kind>.csv
-    (columns n,moves); until then the previously collected data in
-    data/legacy/ (imported from olddata/) is used.  With brob='legacy' the
-    brobdicube slot shows the published permnet62 data instead, which
-    reproduces the published graph and tables.
+      curve  sorted [(n, moves)] for the graph.
+    brobdicube's come from data/brobdicube/{worst,model,sim}.csv: its sim
+    table is the measured value where there is one and the model elsewhere,
+    its sim curve the measured sizes only (model values appear only in the
+    tables, starred).  The other solvers' come from data/<solver>/<kind>.csv.
     """
-    if key == 'brobdicube' and brob == 'new':
+    if key == 'brobdicube':
         b = os.path.join(DATA, 'brobdicube')
         if kind == 'upper':
             t = series(os.path.join(b, 'worst.csv'))
-        else:
-            t = series(os.path.join(b, 'model.csv'))
-            simf = os.path.join(b, 'sim.csv')
-            m = series(simf) if os.path.exists(simf) else {}
-            t.update(m)                     # measured wherever we have it
-            # the graph shows measured sizes only; model values appear
-            # only in the tables, starred
-            return t, sorted(m.items()), 'new'
-        return t, sorted(t.items()), 'new'
-    if key == 'brobdicube':
-        key = 'permnet62'
-    fresh = os.path.join(DATA, key, kind + '.csv')
-    if os.path.exists(fresh):
-        t = series(fresh)
-        return t, sorted(t.items()), 'new'
-    leg = os.path.join(DATA, 'legacy', '%s_%s.csv' % (key, kind))
-    if not os.path.exists(leg):
-        return {}, [], None
-    t = series(leg)
-    return t, sorted(t.items()), 'legacy'
+            return t, sorted(t.items())
+        t = series(os.path.join(b, 'model.csv'))
+        m = series(os.path.join(b, 'sim.csv'))
+        t.update(m)
+        return t, sorted(m.items())
+    t = series(os.path.join(DATA, key, kind + '.csv'))
+    return t, sorted(t.items())
 
 
 def brob_sim_source(n):

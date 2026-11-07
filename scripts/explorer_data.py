@@ -6,7 +6,7 @@ of results.txt grouped by algorithm, plus the reference lines, as JSON.
   algorithms: [{name, worst: [[n, moves]], avg | greedy, optimal: [[n, moves]]}]
      worst is the same for -greedy and -optimal (checked); the union of the
      sizes is used.  Algorithms with no greedy/optimal split have avg.
-     The permnet61 averages continue above their largest simulated size
+     The permnet61W/A/B averages continue above their largest simulated size
      with brobdicube's -p max planner estimate (results.txt column model),
      each such point tagged 'planner estimate' (user, 2026-10-12: whole-cube
      -p max runs at 2^16 agree with the estimate to 3.1e-6; -p <= 64 cannot

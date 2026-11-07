@@ -9,11 +9,12 @@ uses PAPER_OUT, default ../paper).
 
 The rows of Tables tab:maketable5, tab:maketable5b, tab:maketable6 and
 tab:discrete-ub are replaced by tables/*.tex, main_graph.pdf by
-figures/main_graph.pdf, and every occurrence of the old best solver's name
-(permnet62: text, table headings, label keys) is renamed to NAME (default:
-permnet62, i.e. unchanged).  Prose that quotes numbers is NOT changed (the
-lemma still counts 62 stages and constant 31); see NOTES.md for the
-statements to recheck.
+figures/main_graph.pdf, and every occurrence of the name the paper
+sources use for the best solver (permnet62: text, table headings, label
+keys) is renamed to NAME (make paper: brobdicube).  The lower-bound
+derivation and the graph caption are rewritten to match the data
+(LB_EDITS, CAPTION_EDIT).  Other prose, including any numbers it quotes, is
+left as it is.
 """
 import argparse
 import os

@@ -7,20 +7,21 @@ counterpart of run_brobdicube.py's sim step:
   rcube1d    sortnet96/solve96 -w 1    default (16-swap, 240-stage) mode = the
                                        RCube/ShellPuppy model, one row at a time
   rcube2d    sortnet96/solve96 -w W    same, W rows at a time
-  permnet72  permnet72/brobdicube      the old 72-stage brobdicube
+  permnet72  permnet72/brobdicube      the 72-stage solver (permnet72)
   permnetL-greedy, permnetL-optimal (L = 62 .. 67)
              brob2/brob2 -a O I [-m]   outer O + 2 x inner I = L stages, with
                                        first-found (greedy) or fewest-stage
                                        (optimal, -m) plans
 
-Every run uses the whole cube per pass (-p My), as the published data did:
+Every run uses the whole cube per pass (-p My):
   n <= FULL_MAX: whole cubes, K solves per run (-M K);
   larger n:      -x: one strip of p rows (p a multiple of the width, so the
                  strip holds whole width groups) is solved and scaled up.
-The width W is the one the published data used (column 2 of
-olddata/arena/<file>.txt, at the nearest size).  The permnetL solvers have no
-published widths: the `tune` step measures them (see do_tune) into
+The width W is measured by the `tune` step (see do_tune) into
 data/<solver>/widths.csv, and only runs at the chosen width are pooled.
+Tuning starts from the widths of earlier runs of these programs
+(olddata/arena/<file>.txt, column 2, at the nearest size), which are also
+the fallback where no tuned size is within a factor of 2.
 
 Every run is seeded (-z), raw runs are appended to
 data/<solver>/runs/<runs-file>, and the step is resumable.  Sample counts are
@@ -61,9 +62,9 @@ PLANNER = 'plan'   # brobdicube picks the widths itself (recorded as w = 0)
 
 
 class Solver:
-    """prog/flags: the command; widths: 1, TUNE or PLANNER; guess: olddata
-    file of published widths (tune starts there; also the fallback where no
-    tuned size is within a factor of 2), else the permnet72 widths;
+    """prog/flags: the command; widths: 1, TUNE or PLANNER; guess: the
+    olddata/arena file of earlier widths (tune starts there; also the fallback
+    where no tuned size is within a factor of 2);
     brob: brobdicube-style command (-t 1 -x -p, no strip width)."""
     def __init__(self, prog, flags, widths, guess=None, brob=False):
         self.prog, self.flags, self.widths, self.guess, self.brob = prog, flags, widths, guess, brob
@@ -108,7 +109,7 @@ def nearest(tab, n):
     return min(near, key=lambda t: abs(math.log(t[0] / n)))[1]
 
 
-def published(f, n):
+def earlier_width(f, n):
     if f not in _widths:
         d = {}
         for line in open(os.path.join(OLD, f)):
@@ -128,7 +129,7 @@ def tuned(solver):
 
 def width(solver, n):
     """The strip width runs at size n use: the tuned width of the nearest
-    tuned size (within a factor of 2), else the published width."""
+    tuned size (within a factor of 2), else the earlier width."""
     sv = SOLVERS[solver]
     if sv.widths == PLANNER:
         return 0
@@ -139,7 +140,7 @@ def width(solver, n):
     if near:
         return nearest(near, n)
     if sv.guess:
-        return published(sv.guess, n)
+        return earlier_width(sv.guess, n)
     sys.exit('%s: no tuned width near n=%d; run the tune step first' % (solver, n))
 
 
@@ -300,7 +301,7 @@ def do_tune(args):
     cands, cap = {}, {}
     for s in solvers:
         for n in sizes:
-            g = published(SOLVERS[s].guess, n)
+            g = earlier_width(SOLVERS[s].guess, n)
             ws = range(1, 5) if n <= 64 else range(g - 1, g + 2)
             cap[s, n] = min(dims(n)[1], g + 3, MAX_TUNE_W)
             cands[s, n] = {w for w in ws if 1 <= w <= dims(n)[1]}

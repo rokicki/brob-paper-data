@@ -7,11 +7,8 @@ bodies with the paper's formatting) and as CSV (tables/*.csv):
   maketable5b   simulated averages (centers only)    Table tab:maketable5b
   maketable6    both, per center cubie, to n = 2^30  Table tab:maketable6
   discrete_ub   whole-cube worst case, even n <= 100 Table tab:discrete-ub
-  compare_permnet62   new brobdicube vs the published permnet62 numbers
 
-The lower-bound column is common.lower (lb.txt); with --brob legacy it is
-common.lower_published_tables, which reproduces the submitted tables.
-Cells for brobdicube simulations beyond the largest measured size come
+The lower-bound column is common.lower.  Cells for brobdicube simulations beyond the largest measured size come
 from the expected-cost model and are marked with an asterisk.
 """
 import argparse
@@ -22,8 +19,8 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import (ROOT, SOLVERS, brob_sim_source, centers, lower, lower_published_tables,  # noqa: E402
-                    read_csv, series, solver_data, upper0d, wings_ub, DATA)
+from common import (ROOT, SOLVERS, brob_sim_source, centers, lower,  # noqa: E402
+                    read_csv, solver_data, upper0d, wings_ub, DATA)
 from sizes import DISCRETE_N, TABLE_N   # noqa: E402
 
 OUT = os.path.join(ROOT, 'tables')
@@ -36,7 +33,7 @@ def sig3(v):
         return '0'
     d = max(0, 2 - int(math.floor(math.log10(abs(v)))))
     if 10 <= v < 11:
-        d = 2        # the published tables print 10.05, 10.04
+        d = 2        # 10.05, 10.04: two decimals so neighboring rows stay distinct
     return '%.*f' % (d, round(v, d))
 
 
@@ -79,25 +76,19 @@ def highlight(cells, values, color):
 def main():
     global OUT
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brob', choices=['new', 'legacy'], default='new',
-                    help='legacy: put the published permnet62 data in the '
-                         'brobdicube column (reproduces the published tables)')
     ap.add_argument('--out', default=OUT)
     a = ap.parse_args()
     OUT = a.out
-    upper = {k: solver_data(k, 'upper', a.brob) for k, _, _ in SOLVERS}
-    sim = {k: solver_data(k, 'sim', a.brob) for k, _, _ in SOLVERS}
+    upper = {k: solver_data(k, 'upper') for k, _, _ in SOLVERS}
+    sim = {k: solver_data(k, 'sim') for k, _, _ in SOLVERS}
     labels = [l for _, l, _ in SOLVERS]
-    if a.brob == 'legacy':
-        labels = ['permnet62' if k == 'brobdicube' else l for (k, _, _), l in zip(SOLVERS, labels)]
-    lower = globals()['lower'] if a.brob == 'new' else lower_published_tables
     keys = [k for k, _, _ in SOLVERS]
 
     def get(d, k, n):
         return d[k][0].get(n)
 
     def star(k, n):
-        return a.brob == 'new' and k == 'brobdicube' and brob_sim_source(n) == 'model'
+        return k == 'brobdicube' and brob_sim_source(n) == 'model'
 
     # ------------------------------------------------------------ table 5
     rows5, csv5 = [], []
@@ -139,8 +130,6 @@ def main():
     write_csv('maketable6.csv', ['n', 'lower', '0D_upper'] + [l + '_upper' for l in labels]
               + [l + '_sim' for l in labels], csv6)
 
-    if a.brob == 'legacy':
-        return
     # --------------------------------------------------------- discrete ub
     worst = {int(r['n']): r for r in read_csv(os.path.join(DATA, 'brobdicube', 'worst.csv'))}
     rowsd, csvd = [], []
@@ -163,22 +152,6 @@ def main():
     write('discrete_ub.tex', '\n'.join(rowsd) + '\n')
     write_csv('discrete_ub.csv', ['n', 'centers', 'wings', 'edges_corners', 'total',
                                   'most_common_widths', 'all_stage_widths'], csvd)
-
-    # ---------------------------------------------- comparison with old data
-    old_u = series(os.path.join(DATA, 'legacy', 'permnet62_upper.csv'))
-    old_s = series(os.path.join(DATA, 'legacy', 'permnet62_sim.csv'))
-    rows = []
-    for n in TABLE_N:
-        nu, ns = get(upper, 'brobdicube', n), get(sim, 'brobdicube', n)
-        ou, os_ = old_u.get(n), old_s.get(n)
-        rows.append([n, '%.6g' % nu, '' if ou is None else '%.3g' % ou,
-                     '' if ou is None else '%+.2f%%' % (100 * (nu / ou - 1)),
-                     '%.10g' % ns, '' if os_ is None else '%.3g' % os_,
-                     '' if os_ is None else '%+.2f%%' % (100 * (ns / os_ - 1)),
-                     brob_sim_source(n)])
-    write_csv('compare_permnet62.csv', ['n', 'brobdicube_upper', 'old_permnet62_upper', 'change_upper',
-                                        'brobdicube_sim', 'old_permnet62_sim', 'change_sim',
-                                        'brobdicube_sim_source'], rows)
 
 
 if __name__ == '__main__':

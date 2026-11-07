@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
 Worst-case center move bounds for the comparison solvers, written to
-data/<solver>/upper.csv (columns n,moves).  Ported from bounds/*.py (the
-scripts behind olddata/bounds/*.txt), which they reproduce exactly except
-for the permnet72 constant (see below).
+data/<solver>/upper.csv (columns n,moves).  The formulas follow the bound
+scripts in olddata/bounds/ (named below).
 
   sortnet96  (bounds/sort96wc.py)  108 + 96 * strips(n)
   permnet72  (bounds/permwc.py)     79 + 72 * strips(n)
   rcube1d    (bounds/sp1dwc.py)    ShellPuppy's published worst case
-  rcube2d    (bounds/sp2dwc.py)    min(published, 240-stage formula, ...)
+  rcube2d    (bounds/sp2dwc.py)    min(ShellPuppy's bound, 240-stage formula, ...)
 
 strips(n) is the cost of one stage over the whole cube, split into strips
 of widths w1 and w1+1 (the best mix): a strip of width w over m columns
@@ -16,9 +15,8 @@ costs 2m + 4(2^w - 1) + w 2^w (every one of the 2^w - 1 row patterns fires;
 each block is the 8-move commutator plus 2 moves per extra row/column).
 The constant is the setup overhead: setup turns cancel between consecutive
 blocks of a stage, so each stage pays its algorithm's length - 8 once.
-For solve96's 96 sortnet96 stages that sum is 108 exactly; for permnet72's
-72 stages it is 79 (bounds/permwc.py reused 108, 29 moves loose).  The
-240 stages of solve96's default (RCube) mode sum to 264, the constant in
+For solve96's 96 sortnet96 stages that sum is 108; for permnet72's 72
+stages it is 79.  The 240 stages of solve96's default (RCube) mode sum to 264, the constant in
 sp2dwc.py.
 
 Usage: bounds.py

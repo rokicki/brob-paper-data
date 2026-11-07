@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
 For each even n up to 4096 (and the table sizes above), which solver has the
-smallest worst-case upper bound?  Prints the ranges, for checking statements
-such as "permnet72 attains the first crossover at n=26".
+smallest worst-case upper bound?  Prints the ranges.
 
-Other solvers' values between the table sizes are interpolated in the graph
-coordinates (lg n, normalized moves) from their curves, so for legacy data
-the boundaries are approximate.
+A solver without a value at some n is interpolated there in the graph
+coordinates (lg n, normalized moves) from its curve.
 """
 import bisect
 import math
@@ -38,10 +36,8 @@ def interpolator(curve):
 
 def main():
     fns = {'0D': upper0d}
-    srcs = {}
     for key, label, _ in SOLVERS:
-        table, curve, src = solver_data(key, 'upper')
-        srcs[label] = src
+        table, curve = solver_data(key, 'upper')
         interp = interpolator(curve)
         fns[label] = (lambda t, g: (lambda n: t.get(n, g(n))))(table, interp)
     sizes = list(range(4, 4097, 2)) + [n for n in TABLE_N if n > 4096]
@@ -50,8 +46,7 @@ def main():
         vals = {k: f(n) for k, f in fns.items()}
         vals = {k: v for k, v in vals.items() if v is not None}
         best.append((n, min(vals, key=vals.get)))
-    print('smallest worst-case center bound (sources: %s)' %
-          ', '.join('%s=%s' % kv for kv in srcs.items()))
+    print('smallest worst-case center bound')
     start = 0
     for i in range(1, len(best) + 1):
         if i == len(best) or best[i][1] != best[start][1]:

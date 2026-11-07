@@ -12,8 +12,8 @@ def _grid(lo_exp, hi_exp, steps_per_octave):
 
 POWERS = [2 ** k for k in range(2, 31)]
 
-# Sizes in the appendix tables: powers of two, plus the two sizes the old
-# Table 6 included because permnet72 was evaluated there.
+# Sizes in the appendix tables: powers of two, plus 671,088,640 and
+# 805,306,368 (5 * 2^27 and 3 * 2^28).
 TABLE_N = sorted(set(POWERS) | {671088640, 805306368})
 
 # Even n <= 100 for the discrete worst-case upper-bound table.

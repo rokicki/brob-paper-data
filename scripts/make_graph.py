@@ -30,14 +30,14 @@ YLABEL = {'lgn': r'moves $\cdot\,\lg n\,/\,(n-2)^2$',
           'lgn2': r'moves $\cdot\,\lg(n-2)\,/\,(n-2)^2$',
           'lgn2n2': r'moves $\cdot\,\lg(n-2)\,/\,n^2$',
           'lgnn2': r'moves $\cdot\,\lg n\,/\,n^2$'}
-TITLE = {'lgn': r'$(n-2)^2/\lg n$ (submitted graph)',
+TITLE = {'lgn': r'$(n-2)^2/\lg n$',
          'lgn2': r'$(n-2)^2/\lg(n-2)$',
-         'lgn2n2': r'$n^2/\lg(n-2)$ (submitted axis label)',
+         'lgn2n2': r'$n^2/\lg(n-2)$',
          'lgnn2': r'$n^2/\lg n$'}
 
 
-def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
-    """Draw all curves on ax; returns the series that use legacy data."""
+def draw(ax, scale, legend=True, ymax=300, show_centers=False):
+    """Draw all curves on ax."""
     ns = MODEL_N
     xs = [math.log2(n) for n in ns]
     ax.plot(xs, [graph_y(n, lower(n), scale) for n in ns], color='black', lw=LW, label='lower')
@@ -46,16 +46,9 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
         # the number of center cubies, 6(n-2)^2, as if it were a move count
         ax.plot(xs, [graph_y(n, centers(n), scale) for n in ns], ':', color='saddlebrown',
                 lw=LW, label='center count')
-    legacy = []
     for key, label, color in SOLVERS:
-        if brob == 'legacy' and key == 'brobdicube':
-            label = 'permnet62'
         for kind, style in (('sim', '--'), ('upper', '-')):
-            _, curve, src = solver_data(key, kind, brob)
-            if not curve:
-                continue
-            if src == 'legacy':
-                legacy.append('%s_%s' % (label, kind))
+            _, curve = solver_data(key, kind)
             pts = [(math.log2(n), graph_y(n, m, scale)) for n, m in curve
                    if n >= 4 and n % 2 == 0]
             ax.plot([p[0] for p in pts], [p[1] for p in pts], style, color=color, lw=LW,
@@ -65,9 +58,7 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
     ax.set_xlabel(r'$\lg(n)$')
     ax.set_ylabel(YLABEL[scale])
     ax.grid(True, color='#b0b0b0', linewidth=0.8)
-    if legend == 'inside':
-        ax.legend(loc='upper center', fontsize=6)
-    elif legend:
+    if legend:
         # at the top in two columns (user, 2026-11-06), with the original
         # labels: the bounds on the left, the averages on the right, each
         # solver's two on one row (user, 2026-11-06).  In the gap between where the 0D and rcube1d
@@ -84,18 +75,14 @@ def draw(ax, brob, scale, legend=True, ymax=300, show_centers=False):
         ax.legend([lines[k] for k in order], order, loc='upper center', bbox_to_anchor=(0.43, 1.0),
                   ncol=2, fontsize=5.5, framealpha=0.9, handlelength=1.8, labelspacing=0.25,
                   columnspacing=0.8, borderaxespad=0.3)
-    return legacy
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brob', choices=['new', 'legacy'], default='new',
-                    help='legacy: draw the published permnet62 data instead of '
-                         'the new brobdicube data (reproduces the published graph)')
     ap.add_argument('--out', default=os.path.join(ROOT, 'figures'))
     ap.add_argument('--scale', choices=['lgn', 'lgn2', 'lgn2n2', 'lgnn2', 'all'], default='lgnn2',
-                    help='normalize by n^2/lg n (default), (n-2)^2/lg n (the '
-                         'submitted graph), (n-2)^2/lg(n-2), n^2/lg(n-2), or all four')
+                    help='normalize by n^2/lg n (default), (n-2)^2/lg n, '
+                         '(n-2)^2/lg(n-2), n^2/lg(n-2), or all four')
     ap.add_argument('--ymax', type=float, default=None,
                     help='top of the y axis (default 210; 300 with --scale all)')
     ap.add_argument('--no-centers', dest='centers', action='store_false',
@@ -110,7 +97,7 @@ def main():
         # rows: n^2 then (n-2)^2; columns: lg n then lg(n-2)
         for ax, sc in zip(axs.flat, ('lgnn2', 'lgn2n2', 'lgn', 'lgn2')):
             ax.set_title('normalized by ' + TITLE[sc], fontsize=9)
-            draw(ax, a.brob, sc, legend=False, ymax=a.ymax, show_centers=a.centers)
+            draw(ax, sc, legend=False, ymax=a.ymax, show_centers=a.centers)
         h, l = axs.flat[0].get_legend_handles_labels()
         fig.legend(h, l, loc='center right', fontsize=8, frameon=False)
         fig.tight_layout(rect=(0, 0, 0.86, 1))
@@ -118,16 +105,11 @@ def main():
         fig.savefig(os.path.join(out, 'scaling_compare.pdf'))
         return
     name = 'main_graph' if a.scale == 'lgnn2' else 'main_graph_' + a.scale
-    # the submitted graph had its legend inside; --brob legacy keeps that look
-    inside = a.brob == 'legacy'
     fig, ax = plt.subplots(figsize=(6.0, 3.9))
-    legacy = draw(ax, a.brob, a.scale, legend='inside' if inside else True,
-                  ymax=a.ymax, show_centers=a.centers)
+    draw(ax, a.scale, ymax=a.ymax, show_centers=a.centers)
     fig.tight_layout()
     fig.savefig(os.path.join(out, name + '.pdf'))
     fig.savefig(os.path.join(out, name + '.png'), dpi=300)
-    if legacy:
-        print('note: using published (legacy) data for: ' + ', '.join(legacy))
 
 
 if __name__ == '__main__':
